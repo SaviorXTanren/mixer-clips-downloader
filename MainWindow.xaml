@@ -13,7 +13,8 @@
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"   
         
         mc:Ignorable="d"
-        Title="Mixer Clips Downloader" Height="600" Width="600">
+        Title="Mixer Clips Downloader" Height="600" Width="600"
+        Icon="Icon.ico">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
