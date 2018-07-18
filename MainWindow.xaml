@@ -4,9 +4,105 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MixerClipsDownloader"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        xmlns:MaterialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"   
+        
+        mc:Ignorable="d"
+        Title="Mixer Clips Downloader" Height="600" Width="600">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <MaterialDesign:DialogHost x:Name="MDDialogHost" Identifier="RootDialog" />
+        
+        <Grid x:Name="LoginGrid" Grid.Row="0">
+            <Button x:Name="LoginButton" HorizontalAlignment="Center" VerticalAlignment="Center" Click="LoginButton_Click">Login</Button>
+        </Grid>
+
+        <Grid x:Name="MainGrid" Grid.Row="0" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock FontWeight="Bold" VerticalAlignment="Center" Grid.Column="0">Step 1 - Download FFMPEG:</TextBlock>
+
+                <Button Grid.Column="2" x:Name="DownloadFFMPEGButton" Click="DownloadFFMPEGButton_Click">Download FFMPEG</Button>
+                <TextBlock Grid.Column="2" x:Name="FFMPEGAlreadyDownloadedTextBlock" VerticalAlignment="Center" Visibility="Collapsed">Already Downloaded!</TextBlock>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock FontWeight="Bold" VerticalAlignment="Center" Grid.Row="0">Step 2 - Select clips you wish to download:</TextBlock>
+
+                <ScrollViewer Grid.Row="2" Height="350">
+                    <DataGrid x:Name="ClipsDataGrid" Style="{StaticResource StandardDataGrid}" Width="500">
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn Binding="{Binding Path=Selected, Mode=TwoWay}">
+                                <DataGridCheckBoxColumn.Header>
+                                    <CheckBox x:Name="SelectAllCheckBox" Checked="SelectAllCheckBox_Checked" Unchecked="SelectAllCheckBox_Checked" Margin="6,0,0,0" />
+                                </DataGridCheckBoxColumn.Header>
+                            </DataGridCheckBoxColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*" />
+                            <DataGridTemplateColumn Header="Link" Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock><Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate">Link</Hyperlink></TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Date &amp; Time" Binding="{Binding DateTime}" IsReadOnly="True" Width="160" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+            </Grid>
+
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock FontWeight="Bold" VerticalAlignment="Center" Grid.Column="0">Step 3 - Download Clips:</TextBlock>
+
+                <Button Grid.Column="2" x:Name="DownloadClipsButton" Click="DownloadClipsButton_Click">Download Clips</Button>
+            </Grid>
+        </Grid>
+
+        <ProgressBar x:Name="StatusBar" Grid.Row="1" IsIndeterminate="True" Visibility="Hidden" />
     </Grid>
 </Window>
